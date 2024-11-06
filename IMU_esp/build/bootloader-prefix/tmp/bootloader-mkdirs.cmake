@@ -10,18 +10,18 @@ if(NOT EXISTS "/Users/sonalipalit/esp/esp-idf/components/bootloader/subproject")
   file(MAKE_DIRECTORY "/Users/sonalipalit/esp/esp-idf/components/bootloader/subproject")
 endif()
 file(MAKE_DIRECTORY
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader"
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix"
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/tmp"
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/src/bootloader-stamp"
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/src"
-  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/src/bootloader-stamp"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/tmp"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/src/bootloader-stamp"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/src"
+  "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()

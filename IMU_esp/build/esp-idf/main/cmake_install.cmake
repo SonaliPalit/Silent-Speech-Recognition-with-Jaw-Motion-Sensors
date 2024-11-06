@@ -1,4 +1,4 @@
-# Install script for directory: /Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/main
+# Install script for directory: /Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

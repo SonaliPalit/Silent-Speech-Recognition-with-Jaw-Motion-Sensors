@@ -1,6 +1,6 @@
 /* Automatically generated file; DO NOT EDIT */
 /* Espressif IoT Development Framework Linker Script */
-/* Generated from: /Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/esp-idf/esp_system/ld/sections.ld.in */
+/* Generated from: /Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/esp-idf/esp_system/ld/sections.ld.in */
 
 /*
  * SPDX-FileCopyrightText: 2021 Espressif Systems (Shanghai) CO LTD

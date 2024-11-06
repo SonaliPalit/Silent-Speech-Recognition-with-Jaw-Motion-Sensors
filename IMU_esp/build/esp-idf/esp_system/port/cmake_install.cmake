@@ -39,6 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/esp-idf/esp_system/port/soc/esp32s3/cmake_install.cmake")
+  include("/Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/esp-idf/esp_system/port/soc/esp32s3/cmake_install.cmake")
 endif()
 

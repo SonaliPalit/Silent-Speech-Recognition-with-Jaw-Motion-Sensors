@@ -1,4 +1,4 @@
-/* * Data converted from /Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 #if !defined (__APPLE__) && !defined (__linux__)

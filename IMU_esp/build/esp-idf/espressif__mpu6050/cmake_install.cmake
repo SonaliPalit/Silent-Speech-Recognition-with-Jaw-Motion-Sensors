@@ -1,4 +1,4 @@
-# Install script for directory: /Users/sonalipalit/Documents/ACADEMIC/Semester7/IMU/managed_components/espressif__mpu6050
+# Install script for directory: /Users/sonalipalit/Documents/ACADEMIC/Semester7/CS528/Silent-Speech-Recognition-with-Jaw-Motion-Sensors/IMU_esp/managed_components/espressif__mpu6050
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
