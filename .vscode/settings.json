@@ -8,7 +8,7 @@
         "ESP_ROM_ELF_DIR": "/Users/sonalipalit/.espressif/tools/esp-rom-elfs/20240305/"
     },
     "idf.gitPath": "git",
-    "idf.port": "/dev/tty.usbserial-110",
+    "idf.port": "/dev/tty.usbserial-10",
     "idf.adapterTargetName": "esp32s3",
     "idf.openOcdConfigs": [
         "board/esp32s3-bridge.cfg"
