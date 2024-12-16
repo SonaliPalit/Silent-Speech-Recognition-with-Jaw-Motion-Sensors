@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include "unity.h"
 #include "driver/i2c.h"
@@ -11,8 +10,17 @@
 #define I2C_MASTER_NUM I2C_NUM_0  /*!< I2C port number for master dev */
 #define I2C_MASTER_FREQ_HZ 100000 /*!< I2C master clock frequency */
 
+#define BUFFER_SIZE 400
+
 static const char *TAG = "mpu6050 test";
 static mpu6050_handle_t mpu6050 = NULL;
+
+typedef struct {
+    float acce_x, acce_y, acce_z;
+    float gyro_x, gyro_y, gyro_z;
+} imu_data_t;
+
+imu_data_t data_buffer[BUFFER_SIZE];
 
 /**
  * @brief i2c master initialization
@@ -73,45 +81,16 @@ static void i2c_sensor_mpu6050_init(void)
     }
 }
 
-void app_main()
-{
+void app_main() {
     esp_err_t ret;
-    uint8_t mpu6050_deviceid;
     mpu6050_acce_value_t acce;
     mpu6050_gyro_value_t gyro;
-    mpu6050_temp_value_t temp;
 
     i2c_sensor_mpu6050_init();
 
-    typedef struct {
-        char phrase[20];
-        int duration;
-    } Phrase;
-
-    Phrase phrases[] = {
-        {"Pain", 4},
-        {"Call nurse", 4},
-        {"Help", 4},
-        {"Water", 4},
-    };
-
-    #define NUM_PHRASES (sizeof(phrases) / sizeof(phrases[0]))
-
-    for (int i = 0; i < NUM_PHRASES; i++) {
-        int delay_ms = 8000;  // 8-second wait before starting data collection
-        ESP_LOGI(TAG, "Phrase: %s, collecting data in %d seconds...", phrases[i].phrase, delay_ms / 1000);
-        vTaskDelay(delay_ms / portTICK_PERIOD_MS);
-
-        ESP_LOGI(TAG, "Phrase: %s, Collecting data for %d seconds", phrases[i].phrase, phrases[i].duration);
-
-        printf("Time (ms), Acce_X, Acce_Y, Acce_Z, Gyro_X, Gyro_Y, Gyro_Z\n");
-        int num_iterations = (phrases[i].duration * 100);  // 100 iterations per second for specified duration
-        for (int i = 0; i < num_iterations; i++) {
-            mpu6050_acce_value_t acce;
-            mpu6050_gyro_value_t gyro;
-            float temp;
-            esp_err_t ret;
-
+    while (1) {
+        ESP_LOGI(TAG, "Collecting data for 4 seconds...");
+        for (int i = 0; i < BUFFER_SIZE; i++) {
             ret = mpu6050_get_acce(mpu6050, &acce);
             if (ret != ESP_OK) {
                 ESP_LOGE(TAG, "Failed to get accelerometer data");
@@ -124,24 +103,30 @@ void app_main()
                 return;
             }
 
-            ret = mpu6050_get_temp(mpu6050, &temp);
-            if (ret != ESP_OK) {
-                ESP_LOGE(TAG, "Failed to get temperature data");
-                return;
-            }
+            data_buffer[i].acce_x = acce.acce_x;
+            data_buffer[i].acce_y = acce.acce_y;
+            data_buffer[i].acce_z = acce.acce_z;
+            data_buffer[i].gyro_x = gyro.gyro_x;
+            data_buffer[i].gyro_y = gyro.gyro_y;
+            data_buffer[i].gyro_z = gyro.gyro_z;
 
-            printf("%d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n",
-                    i, acce.acce_x, acce.acce_y, acce.acce_z,
-                    gyro.gyro_x, gyro.gyro_y, gyro.gyro_z);
-
-            vTaskDelay(10 / portTICK_PERIOD_MS);  // 10 ms delay between samples
+            vTaskDelay(10 / portTICK_PERIOD_MS);
         }
+
+        ESP_LOGI(TAG, "Data collection complete. Sending data...");
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            printf("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n",
+                   data_buffer[i].acce_x, data_buffer[i].acce_y, data_buffer[i].acce_z,
+                   data_buffer[i].gyro_x, data_buffer[i].gyro_y, data_buffer[i].gyro_z);
+        }
+
+        ESP_LOGI(TAG, "Data sent. Waiting before next collection...");
+        vTaskDelay(5000 / portTICK_PERIOD_MS);  //5-second delay between collections of data
     }
 
     mpu6050_delete(mpu6050);
     ret = i2c_driver_delete(I2C_MASTER_NUM);
-    if (ret != ESP_OK)
-    {
+    if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to delete I2C driver");
     }
 }

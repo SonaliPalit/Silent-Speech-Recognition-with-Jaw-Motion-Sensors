@@ -19,38 +19,34 @@ def load_data(label_df, data_dir):
 
     for _, row in label_df.iterrows():
         filename = os.path.join(data_dir, row['filename'] + ".txt")
+        # try:
+        if not os.path.exists(filename):
+            print(f"File not found: {filename}")
+            continue
+        df = pd.read_csv(filename)
+        df.columns = df.columns.str.strip()
+        required_columns = ['Acce_X', 'Acce_Y', 'Acce_Z', 'Gyro_X', 'Gyro_Y', 'Gyro_Z']
+        # if not all(col in df.columns for col in required_columns):
+        #     raise ValueError(f"Missing required columns in file {filename}")
+        data = df[required_columns].values.astype(np.float32)
+        data_min = data.min(axis=0)
+        data_max = data.max(axis=0)
+        data_range = data_max - data_min
+        data_range[data_range == 0] = 1   
+        data = (data - data_min) / data_range
 
-        try:
-            if not os.path.exists(filename):
-                print(f"File not found: {filename}")
-                continue
+        timesteps = 400
+        if data.shape[0] > timesteps:
+            data = data[:timesteps, :]
+        elif data.shape[0] < timesteps:
+            padding = np.zeros((timesteps - data.shape[0], data.shape[1]))
+            data = np.vstack((data, padding))
 
-            df = pd.read_csv(filename)
-            df.columns = df.columns.str.strip()
-            required_columns = ['Acce_X', 'Acce_Y', 'Acce_Z', 'Gyro_X', 'Gyro_Y', 'Gyro_Z']
-            if not all(col in df.columns for col in required_columns):
-                raise ValueError(f"Missing required columns in file {filename}")
+        features.append(data.flatten())
+        labels.append(row['label'])
 
-            data = df[required_columns].values.astype(np.float32)
-
-            data_min = data.min(axis=0)
-            data_max = data.max(axis=0)
-            data_range = data_max - data_min
-            data_range[data_range == 0] = 1   
-            data = (data - data_min) / data_range
-
-            timesteps = 400
-            if data.shape[0] > timesteps:
-                data = data[:timesteps, :]
-            elif data.shape[0] < timesteps:
-                padding = np.zeros((timesteps - data.shape[0], data.shape[1]))
-                data = np.vstack((data, padding))
-
-            features.append(data.flatten())
-            labels.append(row['label'])
-
-        except Exception as e:
-            print(f"Error processing file {filename}: {e}")
+        # except Exception as e:
+        #     print(f"Error processing file {filename}: {e}")
 
     features = np.array(features)
     labels = np.array(labels)
@@ -59,7 +55,6 @@ def load_data(label_df, data_dir):
 
 #
 def train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name):
-
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
 
@@ -75,7 +70,6 @@ def train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name
     plt.show()
 
 if __name__ == "__main__":
-
     train_labels = pd.read_csv("train_data.csv")
     val_labels = pd.read_csv("val_data.csv")
     train_dir = val_dir = "help-words"
@@ -100,7 +94,6 @@ if __name__ == "__main__":
         print(f"{model_name} completed in {time.time() - start_time:.2f} seconds")
 
     #hyperparameter tuning for MLP nueral network
-    print("Performing hyperparameter tuning for MLP...")
     param_grid = {
         'hidden_layer_sizes': [(128, 64), (256, 128), (128, 128, 64)],
         'activation': ['relu', 'tanh'],
@@ -108,16 +101,13 @@ if __name__ == "__main__":
         'learning_rate_init': [0.001, 0.01],
         'max_iter': [500]
     }
-
     grid = GridSearchCV(MLPClassifier(random_state=42), param_grid, cv=3, verbose=3)
     grid.fit(X_train, y_train)
-
     print(f"Best Parameters for MLP: {grid.best_params_}")
     best_mlp = grid.best_estimator_
 
     model_filename = "model.pkl"
     joblib.dump(best_mlp, model_filename)
-    print(f"Model saved as {model_filename}")
-
-    print("Evaluating best MLP model...")
+    print(f"model saved in {model_filename}")
+    print("Best MLP model...")
     train_and_evaluate_model(best_mlp, X_train, y_train, X_test, y_test, "Tuned MLP Neural Network")
