@@ -1,4 +1,4 @@
-# Silent Speech Recognition with Jaw Motion Sensors Bhoomika Raj Ethakota, Juhi Manish Jain, Sonali Palit
+# Silent Speech Recognition with Jaw Motion Sensors
 
 ### 1\. Introduction
 
